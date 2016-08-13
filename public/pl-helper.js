@@ -6,8 +6,9 @@ var Helper = (function () {
     function Helper() {
     }
     /**
-     * Add commas to a number.
-     * @param num
+     * Format a number with commas.
+     * @param {number} num
+     * @returns {string} formatted amount.
      */
     Helper.addCommas = function (num) {
         var arr, temp, rgx = /(\d+)(\d{3})/;
@@ -20,11 +21,13 @@ var Helper = (function () {
     };
     /**
      * Center an item with respect to his parent.
-     * @param item
-     * @param toParent
-     * @param orientation
+     * @param {jQuery} item
+     * @param {boolean} toParent
+     * @param {string} orientation
+     * @returns {void}
      */
     Helper.centerItem = function (item, toParent, orientation) {
+        if (toParent === void 0) { toParent = true; }
         if (orientation === void 0) { orientation = 'BOTH'; }
         var container = (toParent) ? item.parent() : $(window), position = item.css('position');
         // Obtains values.
@@ -45,36 +48,36 @@ var Helper = (function () {
     };
     /**
      * Convert a date with format yyyy-mm-dd hh:mm:ss to human date.
-     * @param date
-     * @returns string
+     * @param {string} date
+     * @returns {string} formatted date
      */
     Helper.dateToHumanFormat = function (date) {
-        var days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Doming'], months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'], d = (date.split(' ')[0]).split('-');
+        var days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'], months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'], d = (date.split(' ')[0]).split('-');
         return d[2] + ' de ' + months[parseInt(d[1])] + ' de ' + d[0];
     };
     /**
      * Generate a random number.
-     * @param {number} number
-     * @returns {number}
+     * @param {number} num
+     * @returns {number} random number
      */
     Helper.getRandNum = function (num) {
         return Math.floor(num * (Math.random() % 1));
     };
     /**
      * Generate a random number between two numbers.
-     * @param min
-     * @param max
-     * @returns {number}
+     * @param {number} min
+     * @param {number} max
+     * @returns {number} random number
      */
     Helper.getRangeRandNum = function (min, max) {
         return min + Helper.getRandNum(max - min + 1);
     };
     /**
      * Go to anchor with animation.
-     * @param hash
-     * @param scrollTime
-     * @param extraOffset
-     *
+     * @param {string} hash
+     * @param {number} scrollTime
+     * @param {number} extraOffset
+     * @returns {void}
      * Note: Regular expression to validate the hash /^#(.*)$/
      */
     Helper.goToAnchor = function (hash, scrollTime, extraOffset) {
@@ -86,8 +89,8 @@ var Helper = (function () {
         }
     };
     /**
-     * Get current device.
-     * @return booelan
+     * Determine if current device is mobile.
+     * @returns {boolean}
      */
     Helper.isMobile = function () {
         var check = false;
@@ -100,8 +103,9 @@ var Helper = (function () {
     /**
      * Resize image with respect to his parent.
      * Note: Make sure that image is fully loaded.
-     * @param image
-     * @param outerSizes
+     * @param {jQuery} image
+     * @param {boolean} outerSizes
+     * @returns {void}
      */
     Helper.resizeImage = function (image, outerSizes) {
         if (outerSizes === void 0) { outerSizes = false; }
@@ -116,7 +120,9 @@ var Helper = (function () {
     /**
      * Scale image without lose aspect ratio.
      * Note: Make sure that the image is fully loaded.
-     * @param image
+     * @param {jQuery} image
+     * @param {boolean} outerSizes
+     * @return {void}
      */
     Helper.scaleImage = function (image, outerSizes) {
         if (outerSizes === void 0) { outerSizes = false; }
@@ -129,7 +135,8 @@ var Helper = (function () {
     /**
      * Simulate a place holder of a input.
      * Use data-placeholder attribute.
-     * @param inputs
+     * @param {jQuery} inputs
+     * @returns {void}
      */
     Helper.simulatePlaceHolder = function (inputs) {
         inputs.each(function () {
@@ -152,14 +159,14 @@ var Helper = (function () {
     /**
      * Trim a string to a specified size.
      * Add suspension points if the string was trimmed.
-     * @param str
-     * @param size
-     * @return trimmedString
+     * @param {string} text
+     * @param {number} size
+     * @return {string} trimmed text
      */
-    Helper.trimText = function (str, size) {
+    Helper.trimText = function (text, size) {
         // Removes white space at the end of a string.
         function trim(s) { return s.replace(/^\s+|\s+$/g, ''); }
-        var newString = str.split(" "), trimmedString = '', word = '';
+        var newString = text.split(" "), trimmedString = '', word = '';
         for (var i = 0; i < newString.length; i++) {
             word = newString[i];
             if (trimmedString.length > size) {
@@ -174,14 +181,15 @@ var Helper = (function () {
             }
         }
         trimmedString = trim(trimmedString);
-        return (trimmedString != str)
+        return (trimmedString != text)
             ? trimmedString + '\u2026'
             : trimmedString;
     };
     /**
      * Wait to images are already loaded, then excecute a callback.
-     * @param images
-     * @param callback
+     * @param {jQuery} images
+     * @param {function} callback
+     * @returns {void}
      */
     Helper.waitForImages = function (images, callback) {
         var totalImages = images.length, loadedImages = 0;

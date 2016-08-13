@@ -7,13 +7,14 @@
 class Helper{
 
     /**
-     * Add commas to a number.
-     * @param num
+     * Format a number with commas.
+     * @param {number} num
+     * @returns {string} formatted amount.
      */
-    static addCommas(num: number): string{
-        var arr   : string[],
-            temp  : string,
-            rgx   : RegExp = /(\d+)(\d{3})/;
+    static addCommas(num: number): string {
+        var arr  : string[],
+            temp : string,
+            rgx  : RegExp = /(\d+)(\d{3})/;
 
         temp   = num + '';
         arr    = temp.split('.');
@@ -27,13 +28,14 @@ class Helper{
 
     /**
      * Center an item with respect to his parent.
-     * @param item
-     * @param toParent
-     * @param orientation
+     * @param {jQuery} item
+     * @param {boolean} toParent
+     * @param {string} orientation
+     * @returns {void}
      */
-    static centerItem(item: JQuery, toParent?: boolean, orientation: string = 'BOTH'): void{
-        var container  : JQuery = (toParent) ? item.parent() : $(window),
-            position   : string = item.css('position');
+    static centerItem(item: JQuery, toParent: boolean = true, orientation: string = 'BOTH'): void {
+        var container : JQuery = (toParent) ? item.parent() : $(window),
+            position  : string = item.css('position');
 
         // Obtains values.
         var left = (container.outerWidth() - item.outerWidth()) / 2,
@@ -54,21 +56,21 @@ class Helper{
 
     /**
      * Convert a date with format yyyy-mm-dd hh:mm:ss to human date.
-     * @param date
-     * @returns string
+     * @param {string} date
+     * @returns {string} formatted date
      */
-    static dateToHumanFormat(date: string): string{
-        var days: string[] = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Doming'],
-            months: string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            d = (date.split(' ')[0]).split('-');
+    static dateToHumanFormat(date: string): string {
+        var days   : string[] = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'],
+            months : string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            d      : string[] = (date.split(' ')[0]).split('-');
 
         return d[2] + ' de ' + months[parseInt(d[1])] + ' de ' + d[0];
     }
 
     /**
      * Generate a random number.
-     * @param {number} number
-     * @returns {number}
+     * @param {number} num
+     * @returns {number} random number
      */
     static getRandNum(num: number): number {
         return Math.floor(num * (Math.random() % 1));
@@ -76,9 +78,9 @@ class Helper{
 
     /**
      * Generate a random number between two numbers.
-     * @param min
-     * @param max
-     * @returns {number}
+     * @param {number} min
+     * @param {number} max
+     * @returns {number} random number
      */
     static getRangeRandNum(min: number, max: number): number {
         return min + Helper.getRandNum(max - min + 1);
@@ -86,13 +88,13 @@ class Helper{
 
     /**
      * Go to anchor with animation.
-     * @param hash
-     * @param scrollTime
-     * @param extraOffset
-     *
+     * @param {string} hash
+     * @param {number} scrollTime
+     * @param {number} extraOffset
+     * @returns {void}
      * Note: Regular expression to validate the hash /^#(.*)$/
      */
-    static goToAnchor(hash: string, scrollTime: number = 1000, extraOffset: number = 0): void{
+    static goToAnchor(hash: string, scrollTime: number = 1000, extraOffset: number = 0): void {
         if($(hash).length){
             var offset = $(hash).offset().top - extraOffset;
 
@@ -101,8 +103,8 @@ class Helper{
     }
 
     /**
-     * Get current device.
-     * @return booelan
+     * Determine if current device is mobile.
+     * @returns {boolean}
      */
     static isMobile(): boolean{
         var check = false;
@@ -117,10 +119,11 @@ class Helper{
     /**
      * Resize image with respect to his parent.
      * Note: Make sure that image is fully loaded.
-     * @param image
-     * @param outerSizes
+     * @param {jQuery} image
+     * @param {boolean} outerSizes
+     * @returns {void}
      */
-    static resizeImage(image: JQuery, outerSizes: boolean = false): void{
+    static resizeImage(image: JQuery, outerSizes: boolean = false): void {
         var container   : JQuery = image.parent(),
             parentWidth : number = (outerSizes) ? container.outerWidth() : container.width(),
             parentHeight: number = (outerSizes) ? container.outerHeight() : container.height(),
@@ -139,9 +142,11 @@ class Helper{
     /**
      * Scale image without lose aspect ratio.
      * Note: Make sure that the image is fully loaded.
-     * @param image
+     * @param {jQuery} image
+     * @param {boolean} outerSizes
+     * @return {void}
      */
-    static scaleImage(image: JQuery, outerSizes: boolean = false): void{
+    static scaleImage(image: JQuery, outerSizes: boolean = false): void {
         var container  : JQuery = image.parent(),
             cHeight : number = (outerSizes) ? container.outerHeight() : container.height(),
             cWidth  : number = (outerSizes) ? container.outerWidth() : container.width(),
@@ -161,9 +166,10 @@ class Helper{
     /**
      * Simulate a place holder of a input.
      * Use data-placeholder attribute.
-     * @param inputs
+     * @param {jQuery} inputs
+     * @returns {void}
      */
-    static simulatePlaceHolder(inputs: JQuery): void{
+    static simulatePlaceHolder(inputs: JQuery): void {
         inputs.each(function(){
             var input: JQuery = $(this);
             var value: string = input.data('placeholder');
@@ -188,19 +194,19 @@ class Helper{
     /**
      * Trim a string to a specified size.
      * Add suspension points if the string was trimmed.
-     * @param str
-     * @param size
-     * @return trimmedString
+     * @param {string} text
+     * @param {number} size
+     * @return {string} trimmed text
      */
-    static trimText(str: string, size: number): string{
+    static trimText(text: string, size: number): string {
         // Removes white space at the end of a string.
         function trim (s: string): string{ return s.replace(/^\s+|\s+$/g, ''); }
 
-        var newString    : string[] = str.split(" "),
-            trimmedString: string = '',
-            word         : string = '';
+        var newString     : string[] = text.split(" "),
+            trimmedString : string = '',
+            word          : string = '';
 
-        for (var i: number = 0 ; i < newString.length; i ++) {
+        for (var i = 0 ; i < newString.length; i ++) {
             word = newString[i];
 
             if (trimmedString.length > size)	{
@@ -218,7 +224,7 @@ class Helper{
 
         trimmedString = trim(trimmedString);
 
-        return ( trimmedString != str )
+        return ( trimmedString != text )
             ? trimmedString + '\u2026'
             : trimmedString;
 
@@ -226,8 +232,9 @@ class Helper{
 
     /**
      * Wait to images are already loaded, then excecute a callback.
-     * @param images
-     * @param callback
+     * @param {jQuery} images
+     * @param {function} callback
+     * @returns {void}
      */
     static waitForImages(images: JQuery, callback: () => {}): void{
         var totalImages : number = images.length,
