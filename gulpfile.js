@@ -11,13 +11,18 @@
      * Reference: https://www.npmjs.com/package/gulp-typescript/
      */
     gulp.task('typescript', function() {
-        var settings = {
-            outFile: 'pl-helper.js',
-            target: 'ES5'
-        };
+        var tsSettings = {},
+            uglifySettings = {};
+
+
+        // Set TypeScript settings.
+        tsSettings.outFile = 'pl-helper.min.js';
+        tsSettings.target  = 'ES5';
+
 
         return gulp.src('source/typescript/Helper.ts')
-            .pipe(ts(settings))
+            .pipe(ts(tsSettings))
+            .pipe(uglify(uglifySettings))
             .pipe(gulp.dest('public/'));
     });
 

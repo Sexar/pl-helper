@@ -64,7 +64,7 @@ class Helper{
             months : string[] = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             d      : string[] = (date.split(' ')[0]).split('-');
 
-        return d[2] + ' de ' + months[parseInt(d[1])] + ' de ' + d[0];
+        return d[2] + ' de ' + months[parseInt(d[1]) - 1] + ' de ' + d[0];
     }
 
     /**
@@ -124,17 +124,37 @@ class Helper{
      * @returns {void}
      */
     static resizeImage(image: JQuery, outerSizes: boolean = false): void {
-        var container   : JQuery = image.parent(),
-            parentWidth : number = (outerSizes) ? container.outerWidth() : container.width(),
-            parentHeight: number = (outerSizes) ? container.outerHeight() : container.height(),
-            width       : number = parentWidth,
-            height      : number = parentWidth * image.height() / image.width();
+        var container : JQuery = image.parent(),
+            cWidth    : number = (outerSizes) ? container.outerWidth() : container.width(),
+            cHeight   : number = (outerSizes) ? container.outerHeight() : container.height(),
+            iWidth    : number = 0,
+            iHeight   : number = 0,
+            width     : number = 0,
+            height    : number = 0;
 
-        if( height < parentHeight ){
-            height = parentHeight;
-            width = parentHeight * image.width() / image.height();
+        // Retrieve original sizes.
+        if (!image.data('pl-real-width'))
+            image.data('pl-real-width', image.outerWidth());
+
+        if (!image.data('pl-real-height'))
+            image.data('pl-real-height', image.outerHeight());
+
+        iWidth  = image.data('pl-real-width');
+        iHeight = image.data('pl-real-height');
+
+
+        // Calculate new sizes.
+        width  = cWidth;
+        height = cWidth * iHeight / iWidth;
+
+
+        if( height < cHeight ){
+            height = cHeight;
+            width = cHeight * iWidth / iHeight;
         }
 
+
+        // Asign new sizes to image.
         image.height(height);
         image.width(width);
     }
@@ -150,14 +170,28 @@ class Helper{
         var container  : JQuery = image.parent(),
             cHeight : number = (outerSizes) ? container.outerHeight() : container.height(),
             cWidth  : number = (outerSizes) ? container.outerWidth() : container.width(),
-            iHeight : number = image.height(),
-            iWidth  : number = image.width(),
+            iHeight : number = 0,
+            iWidth  : number = 0,
             ratio   : number[],
             min     : number;
 
+        // Retrieve original sizes.
+        if (!image.data('pl-real-width'))
+            image.data('pl-real-width', image.outerWidth());
+
+        if (!image.data('pl-real-height'))
+            image.data('pl-real-height', image.outerHeight());
+
+        iWidth  = image.data('pl-real-width');
+        iHeight = image.data('pl-real-height');
+
+
+        // Calculate new sizes.
         ratio = [cWidth / iWidth, cHeight / iHeight ];
         min   = Math.min(ratio[0], ratio[1]);
 
+
+        // Assign new sizes to image.
         image.width( iWidth * min );
         image.height( iHeight * min );
 

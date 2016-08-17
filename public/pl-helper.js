@@ -53,7 +53,7 @@ var Helper = (function () {
      */
     Helper.dateToHumanFormat = function (date) {
         var days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'], months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'], d = (date.split(' ')[0]).split('-');
-        return d[2] + ' de ' + months[parseInt(d[1])] + ' de ' + d[0];
+        return d[2] + ' de ' + months[parseInt(d[1]) - 1] + ' de ' + d[0];
     };
     /**
      * Generate a random number.
@@ -109,11 +109,22 @@ var Helper = (function () {
      */
     Helper.resizeImage = function (image, outerSizes) {
         if (outerSizes === void 0) { outerSizes = false; }
-        var container = image.parent(), parentWidth = (outerSizes) ? container.outerWidth() : container.width(), parentHeight = (outerSizes) ? container.outerHeight() : container.height(), width = parentWidth, height = parentWidth * image.height() / image.width();
-        if (height < parentHeight) {
-            height = parentHeight;
-            width = parentHeight * image.width() / image.height();
+        var container = image.parent(), cWidth = (outerSizes) ? container.outerWidth() : container.width(), cHeight = (outerSizes) ? container.outerHeight() : container.height(), iWidth = 0, iHeight = 0, width = 0, height = 0;
+        // Retrieve original sizes.
+        if (!image.data('pl-real-width'))
+            image.data('pl-real-width', image.outerWidth());
+        if (!image.data('pl-real-height'))
+            image.data('pl-real-height', image.outerHeight());
+        iWidth = image.data('pl-real-width');
+        iHeight = image.data('pl-real-height');
+        // Calculate new sizes.
+        width = cWidth;
+        height = cWidth * iHeight / iWidth;
+        if (height < cHeight) {
+            height = cHeight;
+            width = cHeight * iWidth / iHeight;
         }
+        // Asign new sizes to image.
         image.height(height);
         image.width(width);
     };
@@ -126,9 +137,18 @@ var Helper = (function () {
      */
     Helper.scaleImage = function (image, outerSizes) {
         if (outerSizes === void 0) { outerSizes = false; }
-        var container = image.parent(), cHeight = (outerSizes) ? container.outerHeight() : container.height(), cWidth = (outerSizes) ? container.outerWidth() : container.width(), iHeight = image.height(), iWidth = image.width(), ratio, min;
+        var container = image.parent(), cHeight = (outerSizes) ? container.outerHeight() : container.height(), cWidth = (outerSizes) ? container.outerWidth() : container.width(), iHeight = 0, iWidth = 0, ratio, min;
+        // Retrieve original sizes.
+        if (!image.data('pl-real-width'))
+            image.data('pl-real-width', image.outerWidth());
+        if (!image.data('pl-real-height'))
+            image.data('pl-real-height', image.outerHeight());
+        iWidth = image.data('pl-real-width');
+        iHeight = image.data('pl-real-height');
+        // Calculate new sizes.
         ratio = [cWidth / iWidth, cHeight / iHeight];
         min = Math.min(ratio[0], ratio[1]);
+        // Assign new sizes to image.
         image.width(iWidth * min);
         image.height(iHeight * min);
     };
